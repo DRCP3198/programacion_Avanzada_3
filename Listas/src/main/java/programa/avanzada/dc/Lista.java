@@ -143,6 +143,7 @@ public interface Lista<T> {
 
         return ret;
     }
+
     default <U> U foldRightHenry(U identify, Function<T, Function<U, U>> fn) {
         if (isEmpty()) {
             return identify;
@@ -190,18 +191,46 @@ public interface Lista<T> {
                 ls -> t -> ls.count() < n ? ls.append(t) : ls);
     }
 
-//    default Lista<T> dropFold(int n){
+    //    default Lista<T> dropFold(int n){
 //        int total= this.count()-n;
 //        return foldingRight(
 //                Lista.Empty,
 //                t->ls->ls.count()<total?ls.prepend(t):ls
 //        );
 //    }
-default Lista<T> dropFold(int n){
-    int tot= this.count()-n;
-    return foldingRight(
-            Lista.Empty,
-            t->ls->ls.count()<tot?ls.prepend(t):ls);
-}
+    default Lista<T> dropFold(int n) {
+        int tot = this.count() - n;
+        return foldingRight(
+                Lista.Empty,
+                t -> ls -> ls.count() < tot ? ls.prepend(t) : ls);
+    }
+
+    default Lista<Integer> rangeRecursivo(Integer vo, Integer vf) {
+        if (vo < vf) {
+            return Lista.of(vo, rangeRecursivo(vo + 1, vf));
+        }
+        return Lista.Empty;
+    }
+    default Lista<Integer> range(Integer vo, Integer vf){
+        if(vo >= vf){
+            return Lista.Empty;
+        }else{
+            return Lista.of(vo, range(vo + 1, vf));
+        }
+
+    }
+//    default Lista<Integer> rangeTail(Integer vo, Integer vf, Lista<Integer> tmp){
+//        if(vo >= vf){
+//            return rangeTail(vo+1,vf,tmp).concat(Lista.of(vo));
+//        }else{
+//            return Lista.Empty;
+//        }
+//
+//    }
+    //Para mañana range tail recursivo
+    //            range unfold
+    //unfold imperactivo
+    //unfold recursivo
+    //unfold tail recursivo
 
 }
