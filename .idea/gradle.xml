@@ -9,8 +9,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Correcion_examen" />
+            <option value="$PROJECT_DIR$/Listas" />
             <option value="$PROJECT_DIR$/ejemplo1" />
             <option value="$PROJECT_DIR$/ejemplo2" />
+            <option value="$PROJECT_DIR$/ejemplo3" />
           </set>
         </option>
       </GradleProjectSettings>
