@@ -1,8 +1,12 @@
 package programa.avanzada.dc;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public interface Lista<T> {
 
@@ -143,6 +147,7 @@ public interface Lista<T> {
 
         return ret;
     }
+
     default <U> U foldRightHenry(U identify, Function<T, Function<U, U>> fn) {
         if (isEmpty()) {
             return identify;
@@ -190,18 +195,93 @@ public interface Lista<T> {
                 ls -> t -> ls.count() < n ? ls.append(t) : ls);
     }
 
-//    default Lista<T> dropFold(int n){
+    //    default Lista<T> dropFold(int n){
 //        int total= this.count()-n;
 //        return foldingRight(
 //                Lista.Empty,
 //                t->ls->ls.count()<total?ls.prepend(t):ls
 //        );
 //    }
-default Lista<T> dropFold(int n){
-    int tot= this.count()-n;
-    return foldingRight(
-            Lista.Empty,
-            t->ls->ls.count()<tot?ls.prepend(t):ls);
-}
+    default Lista<T> dropFold(int n) {
+        int tot = this.count() - n;
+        return foldingRight(
+                Lista.Empty,
+                t -> ls -> ls.count() < tot ? ls.prepend(t) : ls);
+    }
 
+    default Lista<Integer> rangeRecursivo(Integer vo, Integer vf) {
+        if (vo < vf) {
+            return Lista.of(vo, rangeRecursivo(vo + 1, vf));
+        }
+        return Lista.Empty;
+    }
+    default Lista<Integer> range(Integer vo, Integer vf){
+        if(vo >= vf){
+            return Lista.Empty;
+        }else{
+            return Lista.of(vo, range(vo + 1, vf));
+        }
+
+    }
+
+    //Range tail Recursivo
+    public static Lista<Integer> rangeTail(Integer vo, Integer vf) {
+        return rangeTailRecursive(vo, vf, Lista.Empty);
+    }
+
+    private static Lista<Integer> rangeTailRecursive(Integer vo, Integer vf, Lista<Integer> acumulador) {
+        if (vo >= vf) {
+            return acumulador;
+        } else {
+            return rangeTailRecursive(vo + 1, vf, Lista.of(vo, acumulador));
+        }
+    }
+
+    //Range unfolding
+    default List<Integer> rangeUnfold(int vo, int vf) {
+        return IntStream.range(vo, vf)
+                .boxed()
+                .collect(Collectors.toList());
+    }
+
+    //unfold imperactivo
+    public static Lista<Integer> unfoldImperative(int start, Function<Integer, Integer> f, Predicate<Integer> predicate) {
+        Lista<Integer> result = Lista.Empty;
+        int current = start;
+
+        while (predicate.test(current)) {
+            result.prepend(current);
+            current = f.apply(current);
+        }
+
+        return result;
+    }
+    static <T> Lista<T> unfoldImpe(T start, Function<T, T> fn, Predicate<T> p) {
+        Lista<T> result = Lista.Empty;
+        T current = start;
+
+        while (p.test(current)) {
+            result = result.append(current);
+            current = fn.apply(current);
+        }
+
+        return result;
+    }
+    //unfold recursivo
+    public static <T> Lista<T> unfoldRecursivo(T start, Function<T, T> fn, Predicate<T> p) {
+        if (!p.test(start)) {
+            return Lista.Empty;
+        } else {
+            return Lista.of(start).concat(unfoldRecursivo(fn.apply(start), fn, p));
+        }
+    }
+    //unfold tail recursivo
+    public static Lista<Integer> unfoldTailRecursive(int current, Function<Integer, Integer> f, Predicate<Integer> predicate, Lista<Integer> accumulator) {
+        if (predicate.test(current)) {
+            accumulator.append(current);
+            return unfoldTailRecursive(f.apply(current), f, predicate, accumulator);
+        } else {
+            return accumulator;
+        }
+    }
 }

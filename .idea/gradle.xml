@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/ejemplo1" />
             <option value="$PROJECT_DIR$/ejemplo2" />
             <option value="$PROJECT_DIR$/ejemplo3" />
+            <option value="$PROJECT_DIR$/tailCall" />
           </set>
         </option>
       </GradleProjectSettings>

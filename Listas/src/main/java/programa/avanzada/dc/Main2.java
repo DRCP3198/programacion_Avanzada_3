@@ -1,6 +1,10 @@
 package programa.avanzada.dc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
+
+
 
 public class Main2 {
     public static void main(String[] args) {
@@ -86,5 +90,27 @@ public class Main2 {
         var exec = list.foldingLeft( neutro, fn3);
         exec.exec();
 
+        //Range recursivo
+        System.out.println("range recursivo: "+ ls.range(1,5));
+        Lista<Integer> resultado = Lista.rangeTail(1, 5);
+        System.out.println("range tail recursivo: "+resultado);
+        //Range unfold
+        System.out.println("range unfold: " +ls.rangeUnfold(1,5));
+        //Unfold imperactivo
+        Lista<Integer> r= Lista.unfoldImpe(1, x -> x + 2, x -> x <= 10);
+        System.out.println("unfold imperactivo: "+r);
+        //Unfold recursivo
+        Lista<Integer> r2= Lista.unfoldRecursivo(1, x -> x + 2, x -> x <= 10);
+        System.out.println("unfold recursivo: "+r2);
+        //Unfold tail recursivo
+        Lista<Integer> r3= Lista.unfoldTailRecursive(1, x -> x + 2, x -> x <= 10, ls);
+        System.out.println("unfold tail recursivo: "+r3);
+
+
+
+
+
     }
+
+
 }
